@@ -18,11 +18,12 @@
         border: 1px solid #dddddd;
         text-align: left;
         padding: 0;
-        line-height: 0;
         overflow: hidden;
+        word-wrap: normal;
       }
 
       td:first-child {
+        height: 96px;
         width: 81px;
       }
 
@@ -36,10 +37,54 @@
         vertical-align: bottom;
       }
     </style>
+
+    <script>
+      function Start() {
+        getText();
+      }
+
+      function getText() {
+        // read text from URL location
+        var request = new XMLHttpRequest();
+        request.open(
+          "GET",
+          "https://raw.githubusercontent.com/WTPerv/WTPerv.github.io/master/lvDB.txt",
+          true
+        );
+        request.send(null);
+        request.onreadystatechange = function() {
+          if (request.readyState === 4 && request.status === 200) {
+            var type = request.getResponseHeader("Content-Type");
+            if (type.indexOf("text") !== 1) {
+              populateTables(request.responseText);
+              return;
+            }
+          }
+        };
+      }
+      function populateTables(outer_text) {
+        // var outer_text = getText();
+        outer_text = outer_text.split("\n"); // you can adjust the manner of parsing the received file (regexp)
+
+        var tableHP = document.getElementById("tHP");
+
+        for (let i = 0; i < outer_text.length; i++) {
+          // console.log(outer_text[i]);
+          var row = tableHP.insertRow(i);
+
+          var video = outer_text[i].split(",");
+
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          cell1.innerHTML = video[0];
+          cell2.innerHTML = video[1];
+        }
+      }
+    </script>
   </head>
-  <body>
-    <table height="100px" cellspacing="0" cellpadding="0">
-      <tr>
+  <body onload="Start()">
+    <table id="tHP" height="100px" cellspacing="0" cellpadding="0">
+      <!-- <tr>
         <td>
           <img src="https://i3.ytimg.com/vi/Pv3NB3Q88Mo/hqdefault.jpg" alt="" />
         </td>
@@ -62,7 +107,7 @@
         <td>
           Crank high voltage
         </td>
-      </tr>
+      </tr> -->
     </table>
   </body>
 </html>
