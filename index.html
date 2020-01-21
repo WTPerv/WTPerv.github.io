@@ -74,10 +74,28 @@
 
           var video = outer_text[i].split(",");
 
+          var url = video[0];
+          var id = youtube_parser(url);
+          var shareUrl = "https://youtu.be/" + id;
+
+          var imgsrc = "https://i3.ytimg.com/vi/" + id + "/hqdefault.jpg";
+          var img = "<img src=" + imgsrc + ' alt="" />';
+
+          var title = video[1];
+          var aref = "<a href = " + shareUrl + ">" + title + "</a>";
+
           var cell1 = row.insertCell(0);
           var cell2 = row.insertCell(1);
-          cell1.innerHTML = video[0];
-          cell2.innerHTML = video[1];
+          cell1.innerHTML = img;
+          cell2.innerHTML = aref;
+        }
+
+        function youtube_parser(url) {
+          var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+          var match = url.match(regExp);
+          if (match && match[2].length == 11) {
+            return match[2];
+          }
         }
       }
     </script>
