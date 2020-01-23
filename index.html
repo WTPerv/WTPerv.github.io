@@ -68,10 +68,8 @@
 
         var tableHP = document.getElementById("tHP");
 
-        for (let i = 0; i < outer_text.length; i++) {
-          // console.log(outer_text[i]);
-          var row = tableHP.insertRow(i);
-
+        for (let i = 0; i < outer_text.length; i++) {      
+          if(outer_text[i].length<=0) continue;
           var video = outer_text[i].split(",");
 
           var url = video[0];
@@ -84,6 +82,7 @@
           var title = video[1];
           var aref = "<a href = " + shareUrl + ">" + title + "</a>";
 
+          var row = tableHP.insertRow(i);
           var cell1 = row.insertCell(0);
           var cell2 = row.insertCell(1);
           cell1.innerHTML = img;
