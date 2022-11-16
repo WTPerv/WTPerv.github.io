@@ -94,7 +94,7 @@
           imgTester.shareUrl = shareUrl;
           imgTester.onload = function(){
             if(this.naturalWidth == 120){
-              console.log("Video is dead, hiding... ("+ this.shareUrl +)");
+              console.log("Video is dead, hiding... ("+ this.shareUrl +")");
               this.row.remove();
             }
           }
