@@ -93,9 +93,8 @@
           imgTester.onload = function(imgTester, row){
             if(imgTester.target.naturalWidth == 120){
               console.log("video is dead");
+              console.log(row)
               row.remove();
-            }else {
-              console.log(imgTester.target);
             }
           }
           imgTester.src = imgsrc;
