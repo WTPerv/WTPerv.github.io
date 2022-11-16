@@ -90,7 +90,7 @@
           cell2.innerHTML = aref;
           
           var imgTester = new Image();
-          imgTester.onload = function(imgTester, row){
+          imgTester.onload = function(row, imgTester){
             if(imgTester.target.naturalWidth == 120){
               console.log("video is dead");
               console.log(row)
