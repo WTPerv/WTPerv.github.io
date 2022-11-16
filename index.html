@@ -90,9 +90,11 @@
           cell2.innerHTML = aref;
           
           var imgTester = new Image();
-          imgTester.onerror = function(row){
-            console.log("video is dead");
-            row.remove();
+          imgTester.onload = function(){
+            if(imgTester.width == 120){
+              console.log("video is dead");
+              row.remove();
+            }
           }
           imgTester.src = imgsrc;
         }
