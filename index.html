@@ -39,6 +39,7 @@
     </style>
 
     <script>
+          
       function Start() {
         getText();
       }
@@ -77,9 +78,9 @@
           var shareUrl = "https://youtu.be/" + id;
 
           var imgsrc = "https://i3.ytimg.com/vi/" + id + "/hqdefault.jpg";
-          var img = "<img src=" + imgsrc + ' alt="" onload="onLoadImage()" />';
+          var img = "<img src=" + imgsrc + ' alt="" />';
 
-          var title = url;
+          var title = url; //video[1] //back when txt included titles :c
           var aref = "<a href = " + shareUrl + ">" + title + "</a>";
 
           var row = tableHP.insertRow(i);
@@ -87,6 +88,12 @@
           var cell2 = row.insertCell(1);
           cell1.innerHTML = img;
           cell2.innerHTML = aref;
+          
+          var imgTester = new Image();
+          imgTester.onerror = function(row){
+            console.log("video is dead");
+            row.remove();
+          }
         }
 
         function youtube_parser(url) {
@@ -98,9 +105,6 @@
         }        
       }
       
-      function onLoadImage(){
-        console.log(this.width+ " - "+this.height);
-      }
     </script>
   </head>
   <body onload="Start()">
