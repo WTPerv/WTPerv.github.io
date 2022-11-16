@@ -94,7 +94,10 @@
             if(imgTester.naturalWidth == 120){
               console.log("video is dead");
               row.remove();
-            }else{console.log(imgTester.naturalWidth);}
+            }else {
+              console.log(id);
+              console.log(imgTester);
+            }
           }
           imgTester.src = imgsrc;
         }
