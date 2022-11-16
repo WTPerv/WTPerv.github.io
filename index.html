@@ -90,12 +90,11 @@
           cell2.innerHTML = aref;
           
           var imgTester = new Image();
-          imgTester.onload = function(){
+          imgTester.onload = function(imgTester, row){
             if(imgTester.naturalWidth == 120){
               console.log("video is dead");
               row.remove();
             }else {
-              console.log(id);
               console.log(imgTester);
             }
           }
