@@ -77,7 +77,7 @@
           var shareUrl = "https://youtu.be/" + id;
 
           var imgsrc = "https://i3.ytimg.com/vi/" + id + "/hqdefault.jpg";
-          var img = "<img src=" + imgsrc + ' alt="" />';
+          var img = "<img src=" + imgsrc + ' alt="" onload="onLoadImage()" />';
 
           var title = url;
           var aref = "<a href = " + shareUrl + ">" + title + "</a>";
@@ -95,6 +95,10 @@
           if (match && match[2].length == 11) {
             return match[2];
           }
+        }
+        
+        function onLoadImage(){
+          console.log(this.width+ " - "+this.height);
         }
       }
     </script>
