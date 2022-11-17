@@ -1,125 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Liked Videos</title>
 
-    <style>
-      table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Liked Videos</title>
+  <style>
+    body {
+      background: rgb(30, 30, 30);
+      background: linear-gradient(0deg, rgba(50,50,50) 0%, rgba(20,20,20) 100%);
+      background-attachment: fixed;
+    }
 
-      td,
-      th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 0;
-        overflow: hidden;
-        word-wrap: normal;
-      }
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      font-family: arial, sans-serif;
+      justify-content: center;
+    }
+  </style>
 
-      td:first-child {
-        height: 96px;
-        width: 81px;
-      }
+  <script>
 
-      tr:nth-child(even) {
-        background-color: #dddddd;
-      }
+    function Start() {
+      getText();
+    }
 
-      td img {
-        height: 96px;
-        clip-path: fill-box(50px 0 0 50px);
-        vertical-align: bottom;
-      }
-    </style>
+    function getText() {
+      // read text from URL location
+      var request = new XMLHttpRequest();
+      request.open(
+        "GET",
+        "https://raw.githubusercontent.com/WTPerv/WTPerv.github.io/master/lvDB.txt",
+        true
+      );
+      request.send(null);
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          var type = request.getResponseHeader("Content-Type");
+          if (type.indexOf("text") !== 1) {
+            populateTables(request.responseText);
+            return;
+          }
+        }
+      };
+    }
+    function populateTables(outer_text) {
+      // var outer_text = getText();
+      outer_text = outer_text.split("\n"); // you can adjust the manner of parsing the received file (regexp)
 
-    <script>
-          
-      function Start() {
-        getText();
-      }
+      var parent = document.getElementById("parent");
 
-      function getText() {
-        // read text from URL location
-        var request = new XMLHttpRequest();
-        request.open(
-          "GET",
-          "https://raw.githubusercontent.com/WTPerv/WTPerv.github.io/master/lvDB.txt",
-          true
-        );
-        request.send(null);
-        request.onreadystatechange = function() {
-          if (request.readyState === 4 && request.status === 200) {
-            var type = request.getResponseHeader("Content-Type");
-            if (type.indexOf("text") !== 1) {
-              populateTables(request.responseText);
-              return;
-            }
+      for (let i = 0; i < outer_text.length; i++) {
+        if (outer_text[i].length <= 0) continue;
+
+        var url = outer_text[i];
+        var id = youtube_parser(url);
+        var shareUrl = `https://youtu.be/${id}`;
+
+        var imgsrc = `https://i3.ytimg.com/vi/${id}/hqdefault.jpg`;
+
+        var item = document.createElement("div");
+        parent.appendChild(item);
+        item.outerHTML = `
+        <div class='itemBox' id='${id}'>
+          <div class='container'>
+            <img class='thumb' src=${imgsrc} width=200 />
+            <a class='overlay' href = ${shareUrl}>
+              <div class='link'>${shareUrl}</div>
+            </a>
+          </div>
+        </div>`;
+
+        var imgTester = new Image();
+        imgTester.id = id;
+        imgTester.shareUrl = shareUrl;
+        imgTester.onload = function () {
+          if (this.naturalWidth == 120) {
+            console.log(`Video is dead, hiding... (${this.shareUrl})`);
+            document.getElementById(this.id).remove();
           }
         };
+        imgTester.src = imgsrc;
       }
-      function populateTables(outer_text) {
-        // var outer_text = getText();
-        outer_text = outer_text.split("\n"); // you can adjust the manner of parsing the received file (regexp)
 
-        var tableHP = document.getElementById("tHP");
-
-        for (let i = 0; i < outer_text.length; i++) {
-          if (outer_text[i].length <= 0) continue;
-          var video = outer_text[i].split(",");
-
-          var url = video[0];
-          var id = youtube_parser(url);
-          var shareUrl = "https://youtu.be/" + id;
-
-          var imgsrc = "https://i3.ytimg.com/vi/" + id + "/hqdefault.jpg";
-          var img = "<img src=" + imgsrc + ' alt="" />';
-
-          var title = shareUrl; //video[1] //back when txt included titles :c
-          var aref = "<a href = " + shareUrl + ">" + title + "</a>";
-
-          var row = tableHP.insertRow(i);
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          cell1.innerHTML = img;
-          cell2.innerHTML = aref;
-          
-          var imgTester = new Image();
-          imgTester.row = row;
-          imgTester.shareUrl = shareUrl;
-          imgTester.onload = function(){
-            if(this.naturalWidth == 120){
-              console.log("Video is dead, hiding... ("+ this.shareUrl +")");
-              this.row.remove();
-            }
-          }
-          imgTester.src = imgsrc;
+      function youtube_parser(url) {
+        var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+          return match[2];
         }
-
-        function youtube_parser(url) {
-          var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-          var match = url.match(regExp);
-          if (match && match[2].length == 11) {
-            return match[2];
-          }
-        }        
       }
-      
-    </script>
-  </head>
-  <body onload="Start()">
-    <center>
-      <img
-        src="https://github.com/WTPerv/WTPerv.github.io/raw/master/logo.png"
-        alt=""
-        height="100px"
-      />
-    </center>    
-    <table id="tHP" height="100px" cellspacing="0" cellpadding="0"></table>
-  </body>
+    }
+
+  </script>
+</head>
+
+<body onload="Start()">
+  <style>
+    .itemBox {
+      position: relative;
+      height: auto;
+      width: -moz-fit-content;
+      width: fit-content;
+      background-color: white;
+      padding: 4px;
+      border-radius: 4px;
+      margin: 4px;
+    }
+
+    .itemBox::before {
+      position: absolute;
+      content: "";
+      box-shadow: 0px 0px 25px rgb(0 0 0);
+      z-index: -1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .container {
+      position: relative;
+      /* width: 25%; */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .thumb {
+      display: block;
+      border-radius: 4px;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      transition: .5s ease;
+      background-color: #000000;
+    }
+
+    .container:hover .overlay {
+      opacity: 0.5;
+    }
+
+    .link {
+      color: white;
+      font-size: 12px;
+      font-family: monospace;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+  </style>
+
+  <div class="itemBox" style="display:block; margin:auto;">
+    <img src="https://github.com/WTPerv/WTPerv.github.io/raw/master/logo.png" alt="" height="100px" />
+  </div>
+
+  <div id="parent" class="flex-container"></div>
+
+</body>
+
 </html>
