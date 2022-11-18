@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>YouTube Archive</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico?">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     body {
       background: rgb(30, 30, 30);
@@ -19,12 +19,12 @@
       display: flex;
       position: relative;
       margin: auto;
-      height: 100px;
+      height: 150px;
       width: fit-content;
     }
 
     .banner .logo {
-      width: 100px;
+      height: 100%;
     }
 
     .banner .meta {
@@ -35,9 +35,10 @@
     }
 
     .banner .meta a {
-      margin: 5px;
+      margin: 6px;
+      margin-left: 20px;
       text-decoration: underline;
-      font-size: large;
+      font-size: 1.4em;
       color: #fff;
     }
 
@@ -53,11 +54,6 @@
 
     .itemBox {
       position: relative;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      -webkit-user-drag: none;
       height: -moz-fit-content;
       height: fit-content;
       width: -moz-fit-content;
@@ -166,7 +162,7 @@
         item.outerHTML = `
         <div class='itemBox' id='${id}'>
             <img class='thumb' src=${imgsrc} />
-            <a class='overlay' href = ${shareUrl}>
+            <a class='overlay' href = ${shareUrl} target='_blank' rel='noopener noreferrer' >
               <div class='link'>${shareUrl}</div>
             </a>
         </div>`;
@@ -199,12 +195,16 @@
 
   <div class="banner">
     <div class="logo">
-      <img src="https://github.com/WTPerv/WTPerv.github.io/raw/master/logo.png" alt="" height="100px" />
+      <img src="https://github.com/WTPerv/WTPerv.github.io/raw/master/logo.png" alt="" height="100%" />
     </div>
     <div class="meta">
-      <a href="https://www.youtube.com/c/WalkingTalkingPerv/channels">Youtube Channels</a>
-      <a href="https://www.youtube.com/c/WalkingTalkingPerv/playlists">Youtube Playlists</a>
-      <a href="wtperv.carrd.co">FAQ</a>
+      <a href="https://www.youtube.com/c/WalkingTalkingPerv/channels" target='_blank' rel='noopener noreferrer'>Youtube
+        Lewd Channels</a>
+      <a href="https://www.youtube.com/c/WalkingTalkingPerv/playlists" target='_blank' rel='noopener noreferrer'>Youtube
+        Lewd Playlists</a>
+      <a href="https://raw.githubusercontent.com/WTPerv/WTPerv.github.io/master/lvDB.txt" target='_blank'
+        rel='noopener noreferrer'>Raw List of Videos</a>
+      <a href="wtperv.carrd.co" target='_blank' rel='noopener noreferrer'>FAQ</a>
     </div>
   </div>
 
