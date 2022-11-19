@@ -15,6 +15,10 @@
       font-family: monospace;
     }
 
+    img {
+      display: block;
+    }
+
     .banner {
       display: flex;
       position: relative;
@@ -25,6 +29,11 @@
 
     .banner .logo {
       height: 100%;
+      border-radius: 50%;
+    }
+
+    .banner .logo:hover {
+      scale: 105%;
     }
 
     .banner .meta {
@@ -37,13 +46,26 @@
     .banner .meta a {
       margin: 6px;
       margin-left: 20px;
+      width: 100%;
       text-decoration: underline;
       font-size: 1.4em;
       color: #fff;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 800px) {
+      .banner {
+        height: 120px;
+      }
+
+      .banner .meta a {
+        font-size: 1.1em;
+      }
     }
 
     .banner .meta a:hover {
-      font-weight: bold;
+      font-weight: bolder;
+      scale: 105%;
     }
 
     .flex-container {
@@ -74,12 +96,15 @@
       right: 0;
     }
 
+    .itemBox:hover {
+      scale: 105%;
+    }
+
     .itemBox:hover .overlay {
       opacity: 0.5;
     }
 
     .thumb {
-      display: block;
       border-radius: 8px;
       height: 90px;
       width: 160px;
@@ -192,18 +217,21 @@
 </head>
 
 <body onload="Start()">
-
   <div class="banner">
     <div class="logo">
-      <img src="https://github.com/WTPerv/WTPerv.github.io/raw/master/logo.png" alt="" height="100%" />
+      <a href="https://www.youtube.com/c/WalkingTalkingPerv" target='_blank' rel='noopener noreferrer'>
+        <img src="https://github.com/WTPerv/WTPerv.github.io/raw/master/logo.png" alt="" height="100%" />
+      </a>
     </div>
     <div class="meta">
-      <a href="https://www.youtube.com/c/WalkingTalkingPerv/channels" target='_blank' rel='noopener noreferrer'>Youtube
-        Lewd Channels</a>
-      <a href="https://www.youtube.com/c/WalkingTalkingPerv/playlists" target='_blank' rel='noopener noreferrer'>Youtube
-        Lewd Playlists</a>
+      <a href="https://www.youtube.com/c/WalkingTalkingPerv/channels" target='_blank' rel='noopener noreferrer'>
+        Youtube Lewd Channels</a>
+      <a href="https://www.youtube.com/c/WalkingTalkingPerv/playlists?view=52&sort=dd&shelf_id=0" target='_blank'
+        rel='noopener noreferrer'>
+        Youtube Lewd Playlists</a>
       <a href="https://raw.githubusercontent.com/WTPerv/WTPerv.github.io/master/lvDB.txt" target='_blank'
-        rel='noopener noreferrer'>Raw List of Videos</a>
+        rel='noopener noreferrer'>
+        Raw List of Videos</a>
       <a href="wtperv.carrd.co" target='_blank' rel='noopener noreferrer'>FAQ</a>
     </div>
   </div>
