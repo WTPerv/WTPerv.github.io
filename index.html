@@ -7,9 +7,82 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>YouTube Archive</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico?">
+
+  <script>
+
+    function Start() {
+      getText();
+    }
+
+    function getText() {
+      // read text from URL location
+      let request = new XMLHttpRequest();
+      request.open(
+        "GET",
+        "https://raw.githubusercontent.com/WTPerv/WTPerv.github.io/master/lvDB.txt",
+        true
+      );
+      request.send(null);
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          let type = request.getResponseHeader("Content-Type");
+          if (type.indexOf("text") !== 1) {
+            populateTables(request.responseText);
+            return;
+          }
+        }
+      };
+    }
+    function populateTables(outer_text) {
+      outer_text = outer_text.split("\n");
+
+      let parent = document.getElementById("parent");
+
+      for (let i = 0; i < outer_text.length; i++) {
+        if (outer_text[i].length <= 0) continue;
+
+        let url = outer_text[i];
+        let id = youtube_parser(url);
+        let shareUrl = `https://youtu.be/${id}`;
+
+        let imgsrc = `https://i3.ytimg.com/vi/${id}/hqdefault.jpg`;
+
+        let item = document.createElement("div");
+        parent.appendChild(item);
+        item.outerHTML = `
+        <div class='itemBox' id='${id}'>
+            <img class='thumb' src=${imgsrc} />
+            <a class='overlay' href = ${shareUrl} target='_blank' rel='noopener noreferrer' >
+              <div class='link'>${shareUrl}</div>
+            </a>
+        </div>`;
+
+        let imgTester = new Image();
+        imgTester.id = id;
+        imgTester.shareUrl = shareUrl;
+        imgTester.onload = function () {
+          if (this.naturalWidth == 120) {
+            console.log(`Video is dead, hiding... (${this.shareUrl})`);
+            document.getElementById(this.id).remove();
+          }
+        };
+        imgTester.src = imgsrc;
+      }
+
+      function youtube_parser(url) {
+        let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
+        if (match && match[2].length == 11) {
+          return match[2];
+        }
+      }
+    }
+
+  </script>
+
   <style>
     html {
-      background: rgb(30, 30, 30);
+      background: rgb(40, 40, 40);
       background-attachment: fixed;
       font-family: monospace;
     }
@@ -142,78 +215,6 @@
     }
   </style>
 
-  <script>
-
-    function Start() {
-      getText();
-    }
-
-    function getText() {
-      // read text from URL location
-      var request = new XMLHttpRequest();
-      request.open(
-        "GET",
-        "https://raw.githubusercontent.com/WTPerv/WTPerv.github.io/master/lvDB.txt",
-        true
-      );
-      request.send(null);
-      request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 200) {
-          var type = request.getResponseHeader("Content-Type");
-          if (type.indexOf("text") !== 1) {
-            populateTables(request.responseText);
-            return;
-          }
-        }
-      };
-    }
-    function populateTables(outer_text) {
-      // var outer_text = getText();
-      outer_text = outer_text.split("\n"); // you can adjust the manner of parsing the received file (regexp)
-
-      var parent = document.getElementById("parent");
-
-      for (let i = 0; i < outer_text.length; i++) {
-        if (outer_text[i].length <= 0) continue;
-
-        var url = outer_text[i];
-        var id = youtube_parser(url);
-        var shareUrl = `https://youtu.be/${id}`;
-
-        var imgsrc = `https://i3.ytimg.com/vi/${id}/hqdefault.jpg`;
-
-        var item = document.createElement("div");
-        parent.appendChild(item);
-        item.outerHTML = `
-        <div class='itemBox' id='${id}'>
-            <img class='thumb' src=${imgsrc} />
-            <a class='overlay' href = ${shareUrl} target='_blank' rel='noopener noreferrer' >
-              <div class='link'>${shareUrl}</div>
-            </a>
-        </div>`;
-
-        var imgTester = new Image();
-        imgTester.id = id;
-        imgTester.shareUrl = shareUrl;
-        imgTester.onload = function () {
-          if (this.naturalWidth == 120) {
-            console.log(`Video is dead, hiding... (${this.shareUrl})`);
-            document.getElementById(this.id).remove();
-          }
-        };
-        imgTester.src = imgsrc;
-      }
-
-      function youtube_parser(url) {
-        var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        var match = url.match(regExp);
-        if (match && match[2].length == 11) {
-          return match[2];
-        }
-      }
-    }
-
-  </script>
 </head>
 
 <body onload="Start()">
