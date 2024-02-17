@@ -10,6 +10,9 @@
 
   <script>
 
+    let counter_all = 0;
+    let counter_alive = 0;
+    
     function Start() {
       getText();
     }
@@ -64,9 +67,14 @@
           if (this.naturalWidth == 120) {
             console.log(`Video is dead, hiding... (${this.shareUrl})`);
             document.getElementById(this.id).remove();
+            counter_alive--;
+            update_counter();
           }
         };
         imgTester.src = imgsrc;
+
+        counter_all = counter_alive = outer_text.length;
+        update_counter();
       }
 
       function youtube_parser(url) {
@@ -75,6 +83,10 @@
         if (match && match[2].length == 11) {
           return match[2];
         }
+      }
+
+      function update_counter() {
+        document.getElementById("counter").innerHTML = counter_alive + " / " + counter_all;
       }
     }
 
@@ -98,6 +110,7 @@
       margin: auto;
       height: 150px;
       width: fit-content;
+      color: #fff;
     }
 
     .banner {
@@ -245,7 +258,7 @@
       <a href="https://wtperv.carrd.co/" target='_blank' rel='noopener noreferrer'>FAQ</a>
     </div>
   </div>
-  <div class="counter">
+  <div id="counter" class="counter">
     -/-
   </div>
 
